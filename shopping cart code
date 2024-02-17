@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopping Cart</title>
+<style>
+    /* Basic styling */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 0 20px;
+    }
+    .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ccc;
+        padding: 10px 0;
+    }
+    .item img {
+        max-width: 100px;
+        margin-right: 20px;
+    }
+    .quantity {
+        display: flex;
+        align-items: center;
+    }
+    .quantity button {
+        cursor: pointer;
+        padding: 5px 10px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        margin: 0 5px;
+    }
+    .heart {
+        cursor: pointer;
+        color: #ccc;
+    }
+    .heart.active {
+        color: #ff0000;
+    }
+    .total {
+        margin-top: 20px;
+        font-size: 20px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="item">
+        <img src="item1.jpg" alt="Item 1">
+        <div>
+            <h3>Item 1</h3>
+            <p>$10</p>
+            <div class="quantity">
+                <button class="minus">-</button>
+                <span class="quantity-value">1</span>
+                <button class="plus">+</button>
+            </div>
+            <span class="heart">&#10084;</span>
+        </div>
+        <button class="delete">Delete</button>
+    </div>
+    <div class="item">
+        <img src="item2.jpg" alt="Item 2">
+        <div>
+            <h3>Item 2</h3>
+            <p>$15</p>
+            <div class="quantity">
+                <button class="minus">-</button>
+                <span class="quantity-value">1</span>
+                <button class="plus">+</button>
+            </div>
+            <span class="heart">&#10084;</span>
+        </div>
+        <button class="delete">Delete</button>
+    </div>
+    <div class="total">Total: $25</div>
+</div>
+<script>
+    document.querySelectorAll('.item').forEach(item => {
+        const quantityValue = item.querySelector('.quantity-value');
+        const minusBtn = item.querySelector('.minus');
+        const plusBtn = item.querySelector('.plus');
+        const deleteBtn = item.querySelector('.delete');
+        const heartBtn = item.querySelector('.heart');
+
+        let quantity = parseInt(quantityValue.textContent);
+
+        minusBtn.addEventListener('click', () => {
+            if (quantity > 1) {
+                quantity--;
+                quantityValue.textContent = quantity;
+                updateTotal();
+            }
+        });
+
+        plusBtn.addEventListener('click', () => {
+            quantity++;
+            quantityValue.textContent = quantity;
+            updateTotal();
+        });
+
+        deleteBtn.addEventListener('click', () => {
+            item.remove();
+            updateTotal();
+        });
+
+        heartBtn.addEventListener('click', () => {
+            heartBtn.classList.toggle('active');
+        });
+
+        function updateTotal() {
+            let total = 0;
+            document.querySelectorAll('.item').forEach(item => {
+                const price = parseFloat(item.querySelector('p').textContent.substring(1));
+                const qty = parseInt(item.querySelector('.quantity-value').textContent);
+                total += price * qty;
+            });
+            document.querySelector('.total').textContent = `Total: $${total.toFixed(2)}`;
+        }
+    });
+</script>
+</body>
+</html>
